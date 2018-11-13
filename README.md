@@ -1,2 +1,3 @@
 # maze
-maze maker
+
+https://zhengkai.github.io/maze/

@@ -22,8 +22,6 @@ export class Maze {
 
 	color = Array<number>(0, 0, 0);
 
-	backCount = 0;
-
 	constructor(config: any) {
 
 		const canvas = <HTMLCanvasElement> document.getElementById('mazeCanvas');
@@ -108,8 +106,6 @@ export class Maze {
 
 			this.draw();
 
-			limit--;
-
 			now = Date.now();
 			if (now > tsLimit) {
 				break;
@@ -145,30 +141,21 @@ export class Maze {
 		if (found) {
 
 			this.drawLine(direction, newPos, false);
-
 			this.setPos(newPos);
-
 			this.road.push(direction);
 
-		} else {
-
-			if (this.road.length < 1) {
-				console.log('end');
-				this.stop = true;
-				return;
-			}
-
-			const prev = this.road.pop();
-
-			newPos = this.moveBack(this.pos, prev);
-
-			this.drawLine(prev, newPos, true);
-
-			this.backCount++;
-			if (this.backCount > 100000 && this.backCount > this.road.length) {
-				return;
-			}
+			return;
 		}
+
+		if (this.road.length < 1) {
+			console.log('end');
+			this.stop = true;
+			return;
+		}
+
+		const prev = this.road.pop();
+		newPos = this.moveBack(this.pos, prev);
+		this.drawLine(prev, newPos, true);
 	}
 
 	drawLine(direction: number, newPos: Array<number>, isBack: boolean) {
