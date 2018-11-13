@@ -18,6 +18,11 @@ export class Maze {
 	start = false;
 	stop = false;
 
+	colorCycle = 1000;
+	colorMod: number;
+	colorStart: number;
+	colorDirection: boolean;
+
 	road = Array<number>();
 
 	color = Array<number>(0, 0, 0);
@@ -34,7 +39,14 @@ export class Maze {
 			if (config['lineWidth']) {
 				this.lineWidth = config['lineWidth'];
 			}
+			if (config['colorCycle']) {
+				this.colorCycle = config['colorCycle'];
+			}
 		}
+
+		this.colorMod = 6 * this.colorCycle;
+		this.colorStart = Math.floor(Math.random() * this.colorMod);
+		this.colorDirection = Math.random() < 0.5;
 
 		const ctx = canvas.getContext('2d');
 		ctx.lineWidth = this.lineWidth;
@@ -292,15 +304,15 @@ export class Maze {
 
 	loopColor() {
 
-		const range = 1000;
-		const mod = 6 * range;
-
-		const i = this.road.length % mod;
+		let i = (this.road.length + this.colorStart) % this.colorMod;
+		if (!this.colorDirection) {
+			i = this.colorMod - 1 - i;
+		}
 
 		const cb = 255;
 
-		const colorBase = i % range;
-		const step = Math.floor(i / range);
+		const colorBase = i % this.colorCycle;
+		const step = Math.floor(i / this.colorCycle);
 
 		const primary = Math.floor(step / 2) % 3;
 		const offset = step % 2;
@@ -310,7 +322,7 @@ export class Maze {
 
 		let color = [0, 0, 0];
 
-		let progress = colorBase / range;
+		let progress = colorBase / this.colorCycle;
 		if (offset) {
 			progress = 1 - progress;
 		}
@@ -323,7 +335,7 @@ export class Maze {
 
 		this.color = color;
 
-		if (i < mod * 2) {
+		if (i < this.colorMod * 2) {
 			// console.log('color', i, colorBase, color);
 		}
 
