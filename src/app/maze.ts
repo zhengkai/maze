@@ -18,6 +18,8 @@ export class Maze {
 	start = false;
 	stop = false;
 
+	limit = 30;
+
 	colorCycle = 1000;
 	colorMod: number;
 	colorStart: number;
@@ -27,9 +29,9 @@ export class Maze {
 
 	color = Array<number>(0, 0, 0);
 
-	constructor(config: any) {
+	constructor(config: any, canvas: HTMLCanvasElement) {
 
-		const canvas = <HTMLCanvasElement> document.getElementById('mazeCanvas');
+		// const canvas = <HTMLCanvasElement> document.getElementById('mazeCanvas');
 		if (!canvas) {
 			this.stop = true;
 			return;
@@ -41,6 +43,9 @@ export class Maze {
 			}
 			if (config['colorCycle']) {
 				this.colorCycle = config['colorCycle'];
+			}
+			if (config['limit']) {
+				this.limit = config['limit'];
 			}
 		}
 
@@ -110,11 +115,11 @@ export class Maze {
 
 		let now = 0;
 
-		let limit = 30;
+		// const limit = 30;
 		// limit = Infinity;
 
 		let i = 0;
-		for (; i < limit && !this.stop; i++) {
+		for (; i < this.limit && !this.stop; i++) {
 
 			this.draw();
 

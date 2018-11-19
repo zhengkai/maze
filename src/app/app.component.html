@@ -1,4 +1,7 @@
 <div class="panel">
+	<p>line width: <input type="number" [(ngModel)]="config.lineWidth" name="yes" min="1" max="30" value=""></p>
+
+	<p><button (click)="goMaze()">Restart</button> <button (click)="random()">Random</button></p>
 </div>
 
 <router-outlet></router-outlet>
