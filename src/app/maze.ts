@@ -70,7 +70,7 @@ export class Maze {
 		this.setPos(this.pos);
 	}
 
-	public resize() {
+	resize() {
 
 		if (this.stop) {
 			return;
@@ -105,7 +105,7 @@ export class Maze {
 		console.log(w, h, scale);
 	}
 
-	public drawTick(tsPrev?: number) {
+	drawTick(tsPrev?: number) {
 
 		const ts = Date.now();
 
@@ -224,7 +224,7 @@ export class Maze {
 		}
 	}
 
-	public getPos(x: number, y: number) {
+	getPos(x: number, y: number) {
 
 		if (x < 0 || y < 0 || x >= this.size[0] || y >= this.size[1]) {
 			return true;
@@ -245,14 +245,14 @@ export class Maze {
 		return row[x];
 	}
 
-	public setPos(pos: Array<number>) {
+	setPos(pos: Array<number>) {
 
 		this.getPos(pos[0], pos[1]);
 
 		this.map[pos[1]][pos[0]] = true;
 	}
 
-	public moveOffset(direction: number): Array<number> {
+	moveOffset(direction: number): Array<number> {
 
 		const offset = [0, 0];
 
@@ -261,7 +261,7 @@ export class Maze {
 		return offset;
 	}
 
-	public move(pos: Array<number>, direction: number) {
+	move(pos: Array<number>, direction: number) {
 
 		const n = [
 			pos[0],
@@ -276,7 +276,7 @@ export class Maze {
 		return n;
 	}
 
-	public moveBack(pos: Array<number>, direction: number) {
+	moveBack(pos: Array<number>, direction: number) {
 
 		direction = (direction + 2) % 4;
 

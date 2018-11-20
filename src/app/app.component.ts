@@ -12,18 +12,34 @@ export class AppComponent implements OnInit {
 	maze: Maze;
 	domMaze: HTMLCanvasElement;
 
-	isPanelShow = true;
+	fullspeed = true;
 
-	rpg = 3;
+	isPanelShow = true;
 
 	config = {
 		lineWidth: 0,
 		limit: 0,
 	};
 
+	changeSpeed(c?: boolean) {
+		this.fullspeed = (c === undefined) ? !this.fullspeed : c;
+		this.config.limit = this.fullspeed ? Infinity : 30;
+	}
+
 	random() {
-		this.config.lineWidth = (Math.random() * 7 + 1) | 0;
-		this.config.limit = Infinity;
+
+		while (true) {
+			const lineWidth = (Math.random() * 7 + 1) | 0;
+			if (this.config.lineWidth !== lineWidth) {
+				this.config.lineWidth = lineWidth;
+				break;
+			}
+		}
+		this.changeSpeed(Math.random() < 0.5);
+
+		if (this.maze && this.maze.stop) {
+			this.goMaze();
+		}
 	}
 
 	goMaze() {

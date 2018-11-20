@@ -16,7 +16,7 @@ if [ -e "$GIT_DIR" ] && [ ! -d "$GIT_DIR/.git" ]; then
 fi
 
 if [ ! -e "$GIT_DIR" ]; then
-	git clone "git@github.com:zhengkai/maze.git" --depth 1 -b "GIT_BRANCH" "$GIT_DIR"
+	git clone "git@github.com:zhengkai/maze.git" --depth 1 -b "$GIT_BRANCH" "$GIT_DIR"
 fi
 
 ng build -c github
