@@ -1,6 +1,6 @@
 export class Maze {
 
-	map = Array<Array<boolean>>();
+	map = Array<boolean>();
 
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
@@ -58,11 +58,9 @@ export class Maze {
 		this.canvas = canvas;
 		this.ctx = ctx;
 
-		console.log('lineWidth', this.lineWidth);
-
 		this.stepLong = this.lineWidth * 2;
 
-		this.resize();
+		this.calcSize();
 
 		this.pos = this.size.map((v) => {
 			return (v * 0.4) | 0;
@@ -70,7 +68,7 @@ export class Maze {
 		this.setPos(this.pos);
 	}
 
-	resize() {
+	calcSize() {
 
 		if (this.stop) {
 			return;
@@ -97,12 +95,14 @@ export class Maze {
 			this.size[i] = Math.floor((v - margin) / this.stepLong) + 1;
 			this.margin[i] = (margin / 2) | 0;
 
-			console.log(margin, this.size[i], this.margin[i]);
+			console.log(i ? 'Y' : 'X', 'margin', margin, ', size', this.size[i], ', offset', this.margin[i]);
 		});
 
-		console.log('size', this.size[0], this.size[1], 'line', this.lineWidth);
+		this.map.length = this.size[0] * this.size[1];
 
-		console.log(w, h, scale);
+		console.log('size', this.size[0], 'x', this.size[1], '=', this.size[0] * this.size[1]);
+		console.log('lineWidth', this.lineWidth);
+		console.log('screen', w, 'x', h, ', scale = ', scale);
 	}
 
 	drawTick(tsPrev?: number) {
@@ -149,7 +149,7 @@ export class Maze {
 		let direction = 0;
 		for (direction of this.shuffleDirection()) {
 			newPos = this.move(this.pos, direction);
-			if (!this.getPos(newPos[0], newPos[1])) {
+			if (!this.getPos(newPos)) {
 				found = true;
 				break;
 			}
@@ -224,32 +224,17 @@ export class Maze {
 		}
 	}
 
-	getPos(x: number, y: number) {
+	getPos(pos: Array<number>) {
 
-		if (x < 0 || y < 0 || x >= this.size[0] || y >= this.size[1]) {
+		if (pos[0] < 0 || pos[1] < 0 || pos[0] >= this.size[0] || pos[1] >= this.size[1]) {
 			return true;
 		}
 
-		if (this.map.length < y) {
-			this.map.length = y;
-		}
-
-		if (!this.map[y]) {
-			this.map[y] = Array<boolean>();
-		}
-		const row = this.map[y];
-		if (row.length < x) {
-			row.length = x;
-		}
-
-		return row[x];
+		return !!this.map[pos[1] * this.size[0] + pos[0]];
 	}
 
 	setPos(pos: Array<number>) {
-
-		this.getPos(pos[0], pos[1]);
-
-		this.map[pos[1]][pos[0]] = true;
+		this.map[pos[1] * this.size[0] + pos[0]] = true;
 	}
 
 	moveOffset(direction: number): Array<number> {
